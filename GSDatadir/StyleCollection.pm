@@ -12,7 +12,7 @@ sub new {
 	my $self = {};
 	bless ($self, $class);
 	$self->{path} = $path;
-	$self->{glob} = "$path/{workspaces/*,}/styles/*.xml";
+	$self->{glob} = "$path/{workspaces/*/,}styles/*.xml";
 	$self->{coll} = undef;
 	return $self;
 }
