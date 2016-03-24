@@ -27,8 +27,9 @@ sub list {
 
 sub dump {
 	my $self = shift;
-	say "DatastoreCollection: path=$self->{path}, glob=$self->{glob}";
-	foreach (keys %{$self->{coll}}) {
+	my @a = keys %{$self->{coll}};
+	say "DatastoreCollection: path=$self->{path}, glob=$self->{glob}, ".($#a + 1)." items";
+	foreach (@a) {
 		say "DS:$_";
 		$self->{coll}{$_}->dump;
 	}

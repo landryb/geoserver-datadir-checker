@@ -27,8 +27,9 @@ sub list {
 
 sub dump {
 	my $self = shift;
-	say "StyleCollection: path=$self->{path}, glob=$self->{glob}";
-	foreach (keys %{$self->{coll}}) {
+	my @a = keys %{$self->{coll}};
+	say "StyleCollection: path=$self->{path}, glob=$self->{glob}, ".($#a + 1)." items";
+	foreach (@a) {
 		say "Style:$_";
 		$self->{coll}{$_}->dump;
 	}
