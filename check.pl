@@ -9,18 +9,15 @@ use GSDatadir::DatastoreCollection;
 use GSDatadir::StyleCollection;
 
 my $path = "/srv/data/geoserver-prod";
-my $wc = GSDatadir::WorkspaceCollection->new($path);
-my $nc = GSDatadir::NamespaceCollection->new($path);
-my $dc = GSDatadir::DatastoreCollection->new($path);
-my $sc = GSDatadir::StyleCollection->new($path);
+my %c;
+$c{ws} = GSDatadir::WorkspaceCollection->new($path);
+$c{ns} = GSDatadir::NamespaceCollection->new($path);
+$c{ds} = GSDatadir::DatastoreCollection->new($path);
+$c{s} = GSDatadir::StyleCollection->new($path);
 
-$wc->list;
-$nc->list;
-$dc->list;
-$sc->list;
-$wc->dump;
-$nc->dump;
-$sc->dump;
-$dc->dump;
+foreach (keys %c) {
+	$c{$_}->list;
+	$c{$_}->dump;
+}
 
 1;
