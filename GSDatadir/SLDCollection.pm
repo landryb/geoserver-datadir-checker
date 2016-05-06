@@ -9,9 +9,11 @@ use Data::Dumper;
 
 sub new {
 	my ($class, @args) = @_;
-	my $self = $class->SUPER::new(@args, "SLD");
+	my $self = $class->SUPER::new(@args);
 	$self->{glob} = "$self->{path}/{workspaces/*/,}styles/*.sld";
 	return $self;
 }
+
+sub itemtype { return "GSDatadir::SLD"; }
 
 1;

@@ -9,9 +9,11 @@ use Data::Dumper;
 
 sub new {
 	my ($class, @args) = @_;
-	my $self = $class->SUPER::new(@args, "Namespace");
+	my $self = $class->SUPER::new(@args);
 	$self->{glob} = "$self->{path}/workspaces/*/namespace.xml";
 	return $self;
 }
+
+sub itemtype { return "GSDatadir::Namespace"; }
 
 1;

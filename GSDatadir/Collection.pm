@@ -9,7 +9,6 @@ sub new {
 	my $self = {};
 	$self->{gc} = shift;
 	$self->{path} = shift;
-	$self->{itemtype} = shift;
 	$self->{coll} = undef;
 	return bless ($self, $class);
 }
@@ -17,8 +16,7 @@ sub new {
 sub list {
 	my $self = shift;
 	foreach (glob "$self->{glob}") {
-		say "itemtype=$self->{itemtype}, $_";
-		my $item = "GSDatadir::$self->{itemtype}"->new($self->{gc}, $_);
+		my $item = $self->itemtype->new($self->{gc}, $_);
 		$self->{coll}{$item->{id}} = $item;
 	}
 }
@@ -31,9 +29,8 @@ sub get_item {
 sub dump {
 	my $self = shift;
 	my @a = keys %{$self->{coll}};
-	say "$self->{itemtype}Collection: path=$self->{path}, glob=$self->{glob}, ".($#a + 1)." items";
+	say $self->itemtype."Collection: path=$self->{path}, glob=$self->{glob}, ".($#a + 1)." items";
 	foreach (@a) {
-		say "$self->{itemtype}:$_";
 		$self->{coll}{$_}->dump;
 	}
 }

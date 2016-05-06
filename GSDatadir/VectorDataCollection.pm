@@ -9,10 +9,12 @@ use Data::Dumper;
 
 sub new {
 	my ($class, @args) = @_;
-	my $self = $class->SUPER::new(@args, "VectorData");
+	my $self = $class->SUPER::new(@args);
 	$self->{glob} = "find ".$self->{path}." -iname *.shp";
 	return $self;
 }
+
+sub itemtype { return "GSDatadir::VectorData"; }
 
 sub list {
 	my $self = shift;

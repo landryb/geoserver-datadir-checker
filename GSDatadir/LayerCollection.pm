@@ -9,9 +9,11 @@ use Data::Dumper;
 
 sub new {
 	my ($class, @args) = @_;
-	my $self = $class->SUPER::new(@args, "Layer");
+	my $self = $class->SUPER::new(@args);
 	$self->{glob} = "$self->{path}/workspaces/*/*/*/layer.xml";
 	return $self;
 }
+
+sub itemtype { return "GSDatadir::Layer"; }
 
 1;
