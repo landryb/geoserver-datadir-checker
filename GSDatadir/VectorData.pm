@@ -32,7 +32,7 @@ sub new {
 
 sub dump {
 	my $self = shift;
-	say "VectorData: file=$self->{file}, featurecount=$self->{featurecount}, sha1=$self->{sha256}";
+	say "VectorData: file=$self->{file}, size=$self->{size}, featurecount=$self->{featurecount}, sha1=$self->{sha256}";
 #	say Dumper($self);
 }
 
