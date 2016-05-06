@@ -15,6 +15,7 @@ sub new {
 	$self->{gc} = shift;
 	my $file = shift;
 	$self->{file} = $file;
+	$self->{id} = $file;
 	$self->{filename} = fileparse($file);
 	$self->{size} = (stat($file))[7];
 	my $sha = Digest::SHA->new(256);
