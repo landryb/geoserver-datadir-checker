@@ -5,7 +5,7 @@ use XML::XPath;
 use Digest::SHA;
 
 package GSDatadir::SLD;
-use XML::Parser;
+use XML::Twig;
 use File::Basename;
 use Data::Dumper;
 
@@ -39,8 +39,11 @@ sub check {
 	# XXX check for dupes by sha256
 	# XXX validate against xsd ? xsd is only in geoserver source..
 	# only validates well-formedness, exits if non well-formed
-	my $parser = XML::Parser->new();
-	$parser->parsefile($self->{file});
+	my $parser = XML::Twig->new();
+	unless ($parser->safe_parsefile($self->{file})) {
+		say "$self->{id} is incorrect XML, parsing failed";
+		return -1;
+	}
 	return 0;
 }
 1;
