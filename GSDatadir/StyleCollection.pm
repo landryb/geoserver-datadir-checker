@@ -7,10 +7,11 @@ use GSDatadir::Style;
 use Data::Dumper;
 
 sub new {
-	 my $class = shift;
-	my $path = shift;
+	my $class = shift;
 	my $self = {};
 	bless ($self, $class);
+	$self->{gc} = shift;
+	my $path = shift;
 	$self->{path} = $path;
 	$self->{glob} = "$path/{workspaces/*/,}styles/*.xml";
 	$self->{coll} = undef;
@@ -20,7 +21,7 @@ sub new {
 sub list {
 	my $self = shift;
 	foreach (glob "$self->{glob}") {
-		my $ws = GSDatadir::Style->new($_);
+		my $ws = GSDatadir::Style->new($self->{gc}, $_);
 		$self->{coll}{$ws->{id}} = $ws;
 	}
 }

@@ -8,10 +8,10 @@ use Data::Dumper;
 
 sub new {
 	my $class = shift;
-	my $file = shift;
 	my $self = {};
 	bless ($self, $class);
-	$self->{file} = $file;
+	$self->{gc} = shift;
+	$self->{file} = shift;
 	$self->{id} = undef;
 	$self->{name} = undef;
 	$self->{type} = undef;

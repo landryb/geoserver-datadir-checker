@@ -15,15 +15,15 @@ use GSDatadir::LayergroupCollection;
 
 my $path = "/srv/data/geoserver-prod";
 my %c;
-$c{ws} = GSDatadir::WorkspaceCollection->new($path);
-$c{ns} = GSDatadir::NamespaceCollection->new($path);
-$c{ds} = GSDatadir::DatastoreCollection->new($path);
-$c{s} = GSDatadir::StyleCollection->new($path);
-$c{sl} = GSDatadir::SLDCollection->new($path);
-$c{vd} = GSDatadir::VectorDataCollection->new($path);
-$c{ft} = GSDatadir::FeaturetypeCollection->new($path);
-$c{l} = GSDatadir::LayerCollection->new($path);
-$c{lg} = GSDatadir::LayergroupCollection->new($path);
+$c{ws} = GSDatadir::WorkspaceCollection->new(\%c, $path);
+$c{ns} = GSDatadir::NamespaceCollection->new(\%c, $path);
+$c{ds} = GSDatadir::DatastoreCollection->new(\%c, $path);
+$c{s} = GSDatadir::StyleCollection->new(\%c, $path);
+$c{sl} = GSDatadir::SLDCollection->new(\%c, $path);
+$c{vd} = GSDatadir::VectorDataCollection->new(\%c, $path);
+$c{ft} = GSDatadir::FeaturetypeCollection->new(\%c, $path);
+$c{l} = GSDatadir::LayerCollection->new(\%c, $path);
+$c{lg} = GSDatadir::LayergroupCollection->new(\%c, $path);
 
 foreach (keys %c) {
 	$c{$_}->list;

@@ -12,11 +12,12 @@ use Geo::GDAL;
 
 sub new {
 	my $class = shift;
-	my $file = shift;
 	my $self = {};
 	bless ($self, $class);
+	$self->{gc} = shift;
+
+	my $file = shift;
 	$self->{file} = $file;
-	say $file;
 	$self->{filename} = fileparse("$file");
 	$self->{size} = (stat("$file"))[7];
 	my $sha = Digest::SHA->new(256);

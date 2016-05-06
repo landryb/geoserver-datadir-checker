@@ -7,10 +7,11 @@ use GSDatadir::VectorData;
 use Data::Dumper;
 
 sub new {
-	 my $class = shift;
-	my $path = shift;
+	my $class = shift;
 	my $self = {};
 	bless ($self, $class);
+	$self->{gc} = shift;
+	my $path = shift;
 	$self->{path} = $path;
 	$self->{glob} = "find $path -iname *.shp";
 	$self->{coll} = undef;
@@ -21,7 +22,7 @@ sub list {
 	my $self = shift;
 	foreach (`$self->{glob}`) {
 		chomp;
-		$self->{coll}{$_} = GSDatadir::VectorData->new($_);
+		$self->{coll}{$_} = GSDatadir::VectorData->new($self->{gc}, $_);
 	}
 }
 

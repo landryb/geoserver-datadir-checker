@@ -10,9 +10,10 @@ use Data::Dumper;
 
 sub new {
 	my $class = shift;
-	my $file = shift;
 	my $self = {};
 	bless ($self, $class);
+	$self->{gc} = shift;
+	my $file = shift;
 	$self->{file} = $file;
 	$self->{filename} = fileparse($file);
 	$self->{size} = (stat($file))[7];
