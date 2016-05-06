@@ -3,37 +3,15 @@ use strict;
 use 5.010;
 
 package GSDatadir::StyleCollection;
+use parent 'GSDatadir::Collection';
 use GSDatadir::Style;
 use Data::Dumper;
 
 sub new {
-	my $class = shift;
-	my $self = {};
-	bless ($self, $class);
-	$self->{gc} = shift;
-	my $path = shift;
-	$self->{path} = $path;
-	$self->{glob} = "$path/{workspaces/*/,}styles/*.xml";
-	$self->{coll} = undef;
+	my ($class, @args) = @_;
+	my $self = $class->SUPER::new(@args, "Style");
+	$self->{glob} = "$self->{path}/{workspaces/*/,}styles/*.xml";
 	return $self;
-}
-
-sub list {
-	my $self = shift;
-	foreach (glob "$self->{glob}") {
-		my $ws = GSDatadir::Style->new($self->{gc}, $_);
-		$self->{coll}{$ws->{id}} = $ws;
-	}
-}
-
-sub dump {
-	my $self = shift;
-	my @a = keys %{$self->{coll}};
-	say "StyleCollection: path=$self->{path}, glob=$self->{glob}, ".($#a + 1)." items";
-	foreach (@a) {
-		say "Style:$_";
-		$self->{coll}{$_}->dump;
-	}
 }
 
 1;

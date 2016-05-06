@@ -3,37 +3,15 @@ use strict;
 use 5.010;
 
 package GSDatadir::DatastoreCollection;
+use parent 'GSDatadir::Collection';
 use GSDatadir::Datastore;
 use Data::Dumper;
 
 sub new {
-	my $class = shift;
-	my $self = {};
-	bless ($self, $class);
-	$self->{gc} = shift;
-	my $path = shift;
-	$self->{path} = $path;
-	$self->{glob} = "$path/workspaces/*/*/datastore.xml";
-	$self->{coll} = undef;
+	my ($class, @args) = @_;
+	my $self = $class->SUPER::new(@args, "Datastore");
+	$self->{glob} = "$self->{path}/workspaces/*/*/datastore.xml";
 	return $self;
-}
-
-sub list {
-	my $self = shift;
-	foreach (glob "$self->{glob}") {
-		my $ws = GSDatadir::Datastore->new($self->{gc}, $_);
-		$self->{coll}{$ws->{id}} = $ws;
-	}
-}
-
-sub dump {
-	my $self = shift;
-	my @a = keys %{$self->{coll}};
-	say "DatastoreCollection: path=$self->{path}, glob=$self->{glob}, ".($#a + 1)." items";
-	foreach (@a) {
-		say "DS:$_";
-		$self->{coll}{$_}->dump;
-	}
 }
 
 sub look_for_connurl {
