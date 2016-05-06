@@ -32,4 +32,8 @@ sub dump {
 	say "Namespace: file=$self->{file}, id=$self->{id}, prefix=$self->{prefix}"
 }
 
+sub check {
+	# XX check that there's a workspace with the same name/prefix ?
+	return 0;
+}
 1;

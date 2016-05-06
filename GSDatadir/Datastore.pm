@@ -39,4 +39,25 @@ sub dump {
 	say "Datastore: file=$self->{file}, id=$self->{id}, name=$self->{name}, type=$self->{type}, connurl=$self->{connurl}"
 }
 
+sub check {
+	my $self = shift;
+	my $workspace = $self->{gc}->{ws}->get_item($self->{workspaceid});
+	unless ($self->{enabled} eq "true") {
+		warn "$self->{id}/$self->{name} is disabled ??\n";
+	}
+	if ($self->{type} eq "Shapefile" or $self->{type} eq "Directory of spatial files (shapefiles)") {
+		my $path = $self->{ connurl};
+		$path =~ s/^file://;
+		if (! -d $path) {
+			say "$self->{id}/$self->{name} references a non-existent directory: $path";
+		}
+		# XX look for VectorData items under this $path
+	}
+	unless ($workspace) {
+		say "$self->{id}/$self->{name} references a non-existent workspace: $self->{workspaceid}";
+		return -1;
+	}
+	$self->{workspace} = \$workspace;
+	return 0;
+}
 1;

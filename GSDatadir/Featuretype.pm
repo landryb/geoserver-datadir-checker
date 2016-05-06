@@ -38,4 +38,21 @@ sub dump {
 	say "Featuretype: file=$self->{file}, id=$self->{id}, name=$self->{name}, title=$self->{title}"
 }
 
+sub check {
+	my $self = shift;
+	my $namespace = $self->{gc}->{ns}->get_item($self->{namespaceid});
+	unless ($namespace) {
+		say "$self->{id}/$self->{name} references a non-existent namespace: $self->{namespaceid}";
+		return -1;
+	}
+	$self->{namespace} = \$namespace;
+	my $datastore = $self->{gc}->{ds}->get_item($self->{datastoreid});
+	unless ($datastore) {
+		say "$self->{id}/$self->{name} references a non-existent datastore: $self->{datastoreid}";
+		return -1;
+	}
+	$self->{datastore} = \$datastore;
+	return 0;
+}
+
 1;

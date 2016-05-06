@@ -30,4 +30,8 @@ sub dump {
 	say "Workspace: file=$self->{file}, id=$self->{id}, name=$self->{name}"
 }
 
+sub check {
+	# XX check that there's a namespace with the same name ?
+	return 0;
+}
 1;
