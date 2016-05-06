@@ -22,6 +22,11 @@ sub list {
 		$self->{coll}{$item->{id}} = $item;
 	}
 }
+sub get_item {
+	my $self = shift;
+	my $id = shift;
+	return $self->{coll}{$id};
+}
 
 sub dump {
 	my $self = shift;
