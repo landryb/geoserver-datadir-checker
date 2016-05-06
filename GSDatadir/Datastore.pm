@@ -29,7 +29,7 @@ sub parse {
 	$self->{id} = $xp->getNodeText('/dataStore/id');
 	$self->{name} = $xp->getNodeText('/dataStore/name');
 	$self->{type} = $xp->getNodeText('/dataStore/type');
-	$self->{enabled} = $xp->getNodeText('/dataStore/type');
+	$self->{enabled} = $xp->getNodeText('/dataStore/enabled');
 	$self->{workspaceid} = $xp->getNodeText('/dataStore/workspace/id');
 	$self->{connurl} = $xp->getNodeText('/dataStore/connectionParameters/entry[@key="url"]');
 }
