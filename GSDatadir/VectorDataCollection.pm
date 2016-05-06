@@ -36,4 +36,14 @@ sub dump {
 	}
 }
 
+sub check {
+	my $self = shift;
+	my @err = ();
+	foreach (keys %{$self->{coll}}) {
+		if ($self->{coll}{$_}->check < 0) {
+			push @err, $_;
+			say "VD $_ has an issue";
+		}
+	}
+}
 1;

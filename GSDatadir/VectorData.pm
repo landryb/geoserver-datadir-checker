@@ -36,4 +36,15 @@ sub dump {
 #	say Dumper($self);
 }
 
+sub check {
+	my $self = shift;
+	my $dir = dirname($self->{file});
+	my @datastores = $self->{gc}->{ds}->look_for_connurl("file:$dir/");
+	unless (@datastores) {
+		say "no datastore is using file $self->{file}";
+		return -1;
+	}
+	$self->{referenced_by} = \@datastores;
+	return 0;
+}
 1;

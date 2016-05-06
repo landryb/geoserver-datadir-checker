@@ -36,4 +36,10 @@ sub dump {
 	}
 }
 
+sub look_for_connurl {
+	my $self = shift;
+	my $url = shift;
+	my @res = grep { $self->{coll}{$_}->{connurl} eq $url } keys %{$self->{coll}};
+	return @res;
+}
 1;
