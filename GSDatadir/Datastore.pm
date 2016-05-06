@@ -48,10 +48,13 @@ sub check {
 	if ($self->{type} eq "Shapefile" or $self->{type} eq "Directory of spatial files (shapefiles)") {
 		my $path = $self->{ connurl};
 		$path =~ s/^file://;
-		if (! -d $path) {
-			say "$self->{id}/$self->{name} references a non-existent directory: $path";
+		my $basedir = $self->{file};
+		$basedir =~ s/workspaces.*//;
+		if (! -d $path && ! -d "$basedir$path" && ! -f $path && ! -f "$basedir$path") {
+			say "$self->{id}/$self->{name} references a non-existent directory/file: {$basedir,}$path";
+			return -1;
 		}
-		# XX look for VectorData items under this $path
+		# XX look for VectorData items under this $path if dir
 	}
 	unless ($workspace) {
 		say "$self->{id}/$self->{name} references a non-existent workspace: $self->{workspaceid}";
