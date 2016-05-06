@@ -36,4 +36,21 @@ sub dump {
 	say "Layer: file=$self->{file}, id=$self->{id}, name=$self->{name}"
 }
 
+sub check {
+	my $self = shift;
+	my $defaultstyle = $self->{gc}->{s}->get_item($self->{defaultstyleid});
+	my $featuretype = $self->{gc}->{ft}->get_item($self->{featuretypeid});
+	unless ($defaultstyle) {
+		say "$self->{id}/$self->{name} references a non-existent defaultstyle: $self->{defaultstyleid}";
+		return -1;
+	}
+	$self->{defaultstyle} = \$defaultstyle;
+	unless ($featuretype) {
+		say "$self->{id}/$self->{name} references a non-existent featuretype: $self->{featuretypeid}";
+		return -1;
+	}
+	$self->{featuretype} = \$featuretype;
+	return 0;
+}
+
 1;

@@ -4,6 +4,7 @@ use 5.010;
 use XML::XPath;
 
 package GSDatadir::Style;
+use File::Basename;
 use Data::Dumper;
 
 sub new {
@@ -34,4 +35,26 @@ sub dump {
 	say "Style: file=$self->{file}, id=$self->{id}, name=$self->{name}, filename=$self->{filename}"
 }
 
+sub check {
+	my $self = shift;
+	my $sldfile = dirname($self->{file})."/".$self->{filename};
+	my $sld = $self->{gc}->{sl}->get_item($sldfile);
+	unless ($sld) {
+		say "$self->{id}/$self->{name} references a non-existent sld: $sldfile";
+		return -1;
+	}
+	$self->{sld} = \$sld;
+
+	if ($self->{workspaceid}) {
+		my $workspace = $self->{gc}->{ws}->get_item($self->{workspaceid});
+		unless ($workspace) {
+			say "$self->{id}/$self->{name} references a non-existent workspace: $self->{workspaceid}";
+			return -1;
+		}
+		$self->{workspace} = \$workspace;
+	} else {
+			say "$self->{id}/$self->{name} references no workspace: global style?";
+	}
+	return 0;
+}
 1;
