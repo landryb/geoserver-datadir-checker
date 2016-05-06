@@ -30,4 +30,6 @@ foreach (keys %c) {
 	$c{$_}->dump;
 }
 
+say "\nstarting checks\n";
+$c{$_}->check foreach (keys %c);
 1;
