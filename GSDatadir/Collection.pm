@@ -41,8 +41,9 @@ sub check {
 	foreach (keys %{$self->{coll}}) {
 		if ($self->{coll}{$_}->check < 0) {
 			push @err, $_;
-			say "$_ has an issue";
+#			say "$_ has an issue";
 		}
 	}
+	say @err." errors found in ".$self->itemtype." Collection";
 }
 1;
