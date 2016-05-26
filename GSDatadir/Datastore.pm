@@ -32,6 +32,11 @@ sub parse {
 	$self->{enabled} = $xp->getNodeText('/dataStore/enabled');
 	$self->{workspaceid} = $xp->getNodeText('/dataStore/workspace/id');
 	$self->{connurl} = $xp->getNodeText('/dataStore/connectionParameters/entry[@key="url"]');
+	if ($self->{connurl} && substr($self->{connurl}, 0, 6) ne "file:/") {
+		my $basedir = $self->{gc}->{ds}->{path};
+#		say "fixing connurl ($self->{connurl}) for $self->{id}, prepending $basedir";
+		$self->{connurl} = "file:$basedir/".substr($self->{connurl}, 5);
+	}
 }
 
 sub dump {
