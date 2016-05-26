@@ -46,7 +46,7 @@ sub check {
 		warn "$self->{id}/$self->{name} is disabled ??\n";
 	}
 	if ($self->{type} eq "Shapefile" or $self->{type} eq "Directory of spatial files (shapefiles)") {
-		my $path = $self->{ connurl};
+		my $path = $self->{connurl};
 		$path =~ s/^file://;
 		my $basedir = $self->{file};
 		$basedir =~ s/workspaces.*//;
