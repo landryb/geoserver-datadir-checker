@@ -12,8 +12,10 @@ use GSDatadir::VectorDataCollection;
 use GSDatadir::FeaturetypeCollection;
 use GSDatadir::LayerCollection;
 use GSDatadir::LayergroupCollection;
+use GSDatadir::WMSLayerCollection;
 
-my $path = "/srv/data/geoserver-prod";
+my $path = "/srv/data/geoserver254";
+my $getcapurl = "http://georchestra.demo.craig.fr/geoserver/wms?service=WMS&request=GetCapabilities";
 my %c;
 $c{ws} = GSDatadir::WorkspaceCollection->new(\%c, $path);
 $c{ns} = GSDatadir::NamespaceCollection->new(\%c, $path);
@@ -24,6 +26,7 @@ $c{vd} = GSDatadir::VectorDataCollection->new(\%c, $path);
 $c{ft} = GSDatadir::FeaturetypeCollection->new(\%c, $path);
 $c{l} = GSDatadir::LayerCollection->new(\%c, $path);
 $c{lg} = GSDatadir::LayergroupCollection->new(\%c, $path);
+$c{wm} = GSDatadir::WMSLayerCollection->new(\%c, $getcapurl);
 
 foreach (keys %c) {
 	$c{$_}->list;
