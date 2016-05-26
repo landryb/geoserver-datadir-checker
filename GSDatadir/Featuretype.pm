@@ -5,6 +5,8 @@ use XML::XPath;
 
 package GSDatadir::Featuretype;
 use Data::Dumper;
+use LWP::Simple;
+use HTML::Entities;
 
 sub new {
 	my $class = shift;
@@ -31,6 +33,7 @@ sub parse {
 	$self->{declaredsrs} = $xp->getNodeText('/featureType/srs');
 	$self->{namespaceid} = $xp->getNodeText('/featureType/namespace/id');
 	$self->{datastoreid} = $xp->getNodeText('/featureType/store/id');
+	push @{$self->{mdlinks}}, decode_entities($_->string_value) foreach ($xp->findnodes('/featureType/metadataLinks/metadataLink/content')->get_nodelist)
 }
 
 sub dump {
@@ -52,6 +55,14 @@ sub check {
 		return -1;
 	}
 	$self->{datastore} = \$datastore;
+	if (0) {
+		foreach (@{$self->{mdlinks}}) {
+			my @resp = head($_);
+			unless (@resp) {
+				say "for $self->{id}/$self->{name}, metadataLink $_ failed";
+			}
+		}
+	}
 	return 0;
 }
 
