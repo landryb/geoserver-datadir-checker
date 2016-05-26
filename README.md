@@ -11,12 +11,13 @@ you inconsistencies found in the xml files, and geographical data referenced by 
  * Checks: (**TODO** for now)
    * *id* cross-references between xml files
    * unreferenced styles
-   * unreferenced data directories
+   * unreferenced data directories **done**
    * styles referencing unexistent sld
-   * datastores referencing unexistent directory
+   * datastores referencing unexistent directory **done**
    * featuretype referencing unexistent file
    * layers present in GetCapabilities document
-   * duplicates in data directories, based on sha256 sum of the .shp file
+   * duplicates in data directories, based on sha256 sum of the .shp file **done**
+ * eventually look at fdupes on the datadir ?
 
 ## Why this script ?
 
