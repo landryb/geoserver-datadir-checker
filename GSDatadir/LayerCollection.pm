@@ -16,4 +16,17 @@ sub new {
 
 sub itemtype { return "GSDatadir::Layer"; }
 
+sub look_for_styleid {
+	my $self = shift;
+	my $styleid = shift;
+	my @res = grep { $self->{coll}{$_}->{defaultstyleid} eq $styleid } keys %{$self->{coll}};
+	return @res;
+}
+
+sub look_for_featuretypeid {
+	my $self = shift;
+	my $ftid = shift;
+	my @res = grep { $self->{coll}{$_}->{featuretypeid} eq $ftid } keys %{$self->{coll}};
+	return @res;
+}
 1;

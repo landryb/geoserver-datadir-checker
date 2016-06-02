@@ -16,4 +16,11 @@ sub new {
 
 sub itemtype { return "GSDatadir::Featuretype"; }
 
+sub look_for_datastoreid {
+	my $self = shift;
+	my $dsid = shift;
+	my @res = grep { $self->{coll}{$_}->{datastoreid} eq $dsid } keys %{$self->{coll}};
+	return @res;
+}
+
 1;
