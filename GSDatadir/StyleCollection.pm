@@ -16,4 +16,11 @@ sub new {
 
 sub itemtype { return "GSDatadir::Style"; }
 
+sub look_for_sldfilename {
+	my $self = shift;
+	my $sldfilename = shift;
+	my @res = grep { $self->{coll}{$_}->{filename} eq $sldfilename } keys %{$self->{coll}};
+	return @res;
+}
+
 1;
