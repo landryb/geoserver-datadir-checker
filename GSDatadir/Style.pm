@@ -40,7 +40,7 @@ sub check {
 	my $sldfile = dirname($self->{file})."/".$self->{filename};
 	my $sld = $self->{gc}->{sl}->get_item($sldfile);
 	unless ($sld) {
-		say "$self->{id}/$self->{name} references a non-existent sld: $sldfile";
+		say "Style '$self->{name}' ($self->{id}) references a non-existent sld: $sldfile";
 		return -1;
 	}
 	$self->{sld} = \$sld;
@@ -48,17 +48,17 @@ sub check {
 	if ($self->{workspaceid}) {
 		my $workspace = $self->{gc}->{ws}->get_item($self->{workspaceid});
 		unless ($workspace) {
-			say "$self->{id}/$self->{name} references a non-existent workspace: $self->{workspaceid}";
+			say "Style '$self->{name}' ($self->{id}) references a non-existent workspace: $self->{workspaceid}";
 			return -1;
 		}
 		$self->{workspace} = \$workspace;
 	} else {
-			say "$self->{id}/$self->{name} references no workspace: global style?";
+			say "Style '$self->{name}' ($self->{name}) references no workspace: global style?";
 	}
 	my @layers = $self->{gc}->{l}->look_for_styleid($self->{id});
 	push @layers, $self->{gc}->{lg}->look_for_styleid($self->{id});
 	unless (@layers) {
-		say "no layer references style '$self->{name}' ($self->{id})";
+		say "Style '$self->{name}' ($self->{id}) isnt referenced by any layer";
 		return -1;
 	}
 	$self->{referenced_by} = \@layers;

@@ -41,7 +41,7 @@ sub check {
 	my $dir = dirname($self->{file});
 	my @datastores = $self->{gc}->{ds}->look_for_connurl("file:$dir/");
 	unless (@datastores) {
-		say "no datastore is using file $self->{file}";
+		say "VectorData '$self->{file}' isnt referenced by any datastore";
 		return -1;
 	}
 	$self->{referenced_by} = \@datastores;

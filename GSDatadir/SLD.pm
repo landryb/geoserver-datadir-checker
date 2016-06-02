@@ -33,7 +33,7 @@ sub dump {
 sub check {
 	my $self = shift;
 	if ($self->{size} == 0) {
-		say "$self->{id} is empty";
+		say "SLD '$self->{id}' is empty";
 		return -1;
 	}
 	# XXX check for dupes by sha256
@@ -41,7 +41,7 @@ sub check {
 	# only validates well-formedness, exits if non well-formed
 	my $parser = XML::Twig->new();
 	unless ($parser->safe_parsefile($self->{file})) {
-		say "$self->{id} is incorrect XML, parsing failed";
+		say "SLD '$self->{id}' is incorrect XML, parsing failed";
 		return -1;
 	}
 	return 0;

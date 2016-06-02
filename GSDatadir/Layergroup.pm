@@ -43,7 +43,7 @@ sub check {
 	my $self = shift;
 	my $workspace = $self->{gc}->{ws}->get_item($self->{workspaceid});
 	unless ($workspace) {
-		say "$self->{id}/$self->{name} references a non-existent workspace: $self->{workspaceid}";
+		say "Layergroup '$self->{name}' ($self->{name}) references a non-existent workspace: $self->{workspaceid}";
 		return -1;
 	}
 	$self->{workspace} = \$workspace;
@@ -51,7 +51,7 @@ sub check {
 	foreach (@{$self->{layerids}}) {
 		my $layer = $self->{gc}->{l}->get_item($_);
 		unless ($layer) {
-			say "$self->{id}/$self->{name} references a non-existent layer: $_";
+			say "Layergroup '$self->{name}' ($self->{name}) references a non-existent layer: $_";
 			return -1;
 		}
 		push @{$self->{layers}}, $layer;
@@ -60,7 +60,7 @@ sub check {
 	foreach (@{$self->{styleids}}) {
 		my $style = $self->{gc}->{s}->get_item($_);
 		unless ($style) {
-			say "$self->{id}/$self->{name} references a non-existent style: $_";
+			say "Layergroup '$self->{name}' ($self->{name}) references a non-existent style: $_";
 			return -1;
 		}
 		push @{$self->{styles}}, $style;

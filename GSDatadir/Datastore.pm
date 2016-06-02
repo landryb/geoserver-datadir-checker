@@ -56,19 +56,19 @@ sub check {
 		my $basedir = $self->{file};
 		$basedir =~ s/workspaces.*//;
 		if (! -d $path && ! -d "$basedir$path" && ! -f $path && ! -f "$basedir$path") {
-			say "$self->{id}/$self->{name} references a non-existent directory/file: {$basedir,}$path";
+			say "Datastore '$self->{name}' ($self->{id}) references a non-existent directory/file: {$basedir,}$path";
 			return -1;
 		}
 		# XX look for VectorData items under this $path if dir
 	}
 	unless ($workspace) {
-		say "$self->{id}/$self->{name} references a non-existent workspace: $self->{workspaceid}";
+		say "Datastore '$self->{name}' ($self->{id}) references a non-existent workspace: $self->{workspaceid}";
 		return -1;
 	}
 	$self->{workspace} = \$workspace;
 	my @ft = $self->{gc}->{ft}->look_for_datastoreid($self->{id});
 	unless (@ft) {
-		say "no featuretype references datastore '$self->{name}' (${self}->{id})";
+		say "Datastore '$self->{name}' (${self}->{id}) isnt referenced by any featuretype";
 		return -1;
 	}
 	$self->{referenced_by} = \@ft;

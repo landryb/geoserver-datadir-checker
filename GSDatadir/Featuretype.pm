@@ -45,19 +45,19 @@ sub check {
 	my $self = shift;
 	my $namespace = $self->{gc}->{ns}->get_item($self->{namespaceid});
 	unless ($namespace) {
-		say "$self->{id}/$self->{name} references a non-existent namespace: $self->{namespaceid}";
+		say "Featuretype '$self->{name}' ($self->{id}) references a non-existent namespace: $self->{namespaceid}";
 		return -1;
 	}
 	$self->{namespace} = \$namespace;
 	my $datastore = $self->{gc}->{ds}->get_item($self->{datastoreid});
 	unless ($datastore) {
-		say "$self->{id}/$self->{name} references a non-existent datastore: $self->{datastoreid}";
+		say "Featuretype '$self->{name}' ($self->{id}) references a non-existent datastore: $self->{datastoreid}";
 		return -1;
 	}
 	$self->{datastore} = \$datastore;
 	my @layers = $self->{gc}->{l}->look_for_featuretypeid($self->{id});
 	unless (@layers) {
-		say "no layer references featuretype '$self->{name}' ($self->{id})";
+		say "Featuretype '$self->{name}' ($self->{id}) isnt referenced by any layer";
 		return -1;
 	}
 	$self->{referenced_by} = \@layers;
@@ -65,7 +65,7 @@ sub check {
 		foreach (@{$self->{mdlinks}}) {
 			my @resp = head($_);
 			unless (@resp) {
-				say "for $self->{id}/$self->{name}, metadataLink $_ failed";
+				say "Featuretype '$self->{name}' ($self->{id}) has a broken metadataLink: $_";
 			}
 		}
 	}
