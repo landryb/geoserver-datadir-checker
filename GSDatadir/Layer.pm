@@ -28,6 +28,7 @@ sub parse {
 	$self->{name} = $xp->getNodeText('/layer/name');
 	$self->{type} = $xp->getNodeText('/layer/type');
 	$self->{defaultstyleid} = $xp->getNodeText('/layer/defaultStyle/id');
+	# XXX handle multiplestyles
 	$self->{featuretypeid} = $xp->getNodeText('/layer/resource/id');
 }
 
