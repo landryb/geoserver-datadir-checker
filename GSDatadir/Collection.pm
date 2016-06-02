@@ -44,6 +44,6 @@ sub check {
 #			say "$_ has an issue";
 		}
 	}
-	say @err." errors found in ".$self->itemtype." Collection";
+	say @err." errors found in ".$self->itemtype." Collection" if @err;
 }
 1;
