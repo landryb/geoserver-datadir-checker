@@ -55,6 +55,12 @@ sub check {
 		return -1;
 	}
 	$self->{datastore} = \$datastore;
+	my @layers = $self->{gc}->{l}->look_for_featuretypeid($self->{id});
+	unless (@layers) {
+		say "no layer references featuretype '$self->{name}' ($self->{id})";
+		return -1;
+	}
+	$self->{referenced_by} = \@layers;
 	if (0) {
 		foreach (@{$self->{mdlinks}}) {
 			my @resp = head($_);
