@@ -44,6 +44,6 @@ sub check {
 #			say "$_ has an issue";
 		}
 	}
-	say @err." errors found in ".$self->itemtype." Collection" if @err;
+	say @err." items with errors in ".$self->itemtype." Collection on ".scalar(keys %{$self->{coll}})." items" if @err;
 }
 1;
