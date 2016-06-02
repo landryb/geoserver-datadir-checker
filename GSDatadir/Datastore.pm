@@ -37,6 +37,11 @@ sub parse {
 #		say "fixing connurl ($self->{connurl}) for $self->{id}, prepending $basedir";
 		$self->{connurl} = "file:$basedir/".substr($self->{connurl}, 5);
 	}
+	# make sure connurl has a trailing /
+	if ($self->{connurl} && substr($self->{connurl}, -1) ne "/") {
+		say "adding trailing / to $self->{connurl} for $self->{id}";
+		$self->{connurl}.='/';
+	}
 }
 
 sub dump {
