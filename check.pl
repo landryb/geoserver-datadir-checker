@@ -15,7 +15,9 @@ use GSDatadir::LayergroupCollection;
 use GSDatadir::WMSLayerCollection;
 use XML::XPath;
 
-my $path = "/srv/data/geoserver254";
+my $path = $ARGV[0];
+die "usage: perl check.pl /path/to/geoserver/datadir" unless $path;
+die "$path is not a geoserver datadir" unless -f "$path/global.xml";
 my $xp = XML::XPath->new(filename => "$path/global.xml");
 my $getcapurl = $xp->getNodeText('/global/settings/proxyBaseUrl')."/ows?service=WMS&request=GetCapabilities";
 my %c;
