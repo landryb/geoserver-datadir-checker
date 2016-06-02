@@ -66,6 +66,12 @@ sub check {
 		return -1;
 	}
 	$self->{workspace} = \$workspace;
+	my @ft = $self->{gc}->{ft}->look_for_datastoreid($self->{id});
+	unless (@ft) {
+		say "no featuretype references datastore '$self->{name}' (${self}->{id})";
+		return -1;
+	}
+	$self->{referenced_by} = \@ft;
 	return 0;
 }
 1;
