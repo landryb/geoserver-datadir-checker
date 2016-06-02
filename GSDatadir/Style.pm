@@ -55,6 +55,13 @@ sub check {
 	} else {
 			say "$self->{id}/$self->{name} references no workspace: global style?";
 	}
+	my @layers = $self->{gc}->{l}->look_for_styleid($self->{id});
+	push @layers, $self->{gc}->{lg}->look_for_styleid($self->{id});
+	unless (@layers) {
+		say "no layer references style '$self->{name}' ($self->{id})";
+		return -1;
+	}
+	$self->{referenced_by} = \@layers;
 	return 0;
 }
 1;
