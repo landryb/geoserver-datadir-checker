@@ -36,6 +36,12 @@ sub check {
 		say "SLD '$self->{id}' is empty";
 		return -1;
 	}
+	my @styles = $self->{gc}->{s}->look_for_sldfilename($self->{filename});
+	unless (@styles) {
+		say "SLD '$self->{file}' isnt referenced by any style";
+		return -1;
+	}
+	$self->{referenced_by} = \@styles;
 	# XXX check for dupes by sha256
 	# XXX validate against xsd ? xsd is only in geoserver source..
 	# only validates well-formedness, exits if non well-formed
