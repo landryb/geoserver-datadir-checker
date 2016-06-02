@@ -13,9 +13,11 @@ use GSDatadir::FeaturetypeCollection;
 use GSDatadir::LayerCollection;
 use GSDatadir::LayergroupCollection;
 use GSDatadir::WMSLayerCollection;
+use XML::XPath;
 
 my $path = "/srv/data/geoserver254";
-my $getcapurl = "http://georchestra.demo.craig.fr/geoserver/wms?service=WMS&request=GetCapabilities";
+my $xp = XML::XPath->new(filename => "$path/global.xml");
+my $getcapurl = $xp->getNodeText('/global/settings/proxyBaseUrl')."/ows?service=WMS&request=GetCapabilities";
 my %c;
 $c{ws} = GSDatadir::WorkspaceCollection->new(\%c, $path);
 $c{ns} = GSDatadir::NamespaceCollection->new(\%c, $path);
