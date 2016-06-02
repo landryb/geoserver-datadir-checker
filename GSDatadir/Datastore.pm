@@ -48,7 +48,7 @@ sub check {
 	my $self = shift;
 	my $workspace = $self->{gc}->{ws}->get_item($self->{workspaceid});
 	unless ($self->{enabled} eq "true") {
-		warn "$self->{id}/$self->{name} is disabled ??\n";
+		warn "Datastore '$self->{name}' ($self->{name}) is disabled ??\n";
 	}
 	if ($self->{type} eq "Shapefile" or $self->{type} eq "Directory of spatial files (shapefiles)") {
 		my $path = $self->{connurl};
