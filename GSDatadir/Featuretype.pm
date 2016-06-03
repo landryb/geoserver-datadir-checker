@@ -17,6 +17,7 @@ sub new {
 	$self->{id} = undef;
 	$self->{name} = undef;
 	$self->{title} = undef;
+	$self->{nativename} = undef;
 	$self->{declaredsrs} = undef;
 	$self->{namespaceid} = undef;
 	$self->{datastoreid} = undef;
@@ -31,6 +32,7 @@ sub parse {
 	$self->{name} = $xp->getNodeText('/featureType/name');
 	$self->{title} = $xp->getNodeText('/featureType/title');
 	$self->{declaredsrs} = $xp->getNodeText('/featureType/srs');
+	$self->{nativename} = $xp->getNodeText('/featureType/nativeName');
 	$self->{namespaceid} = $xp->getNodeText('/featureType/namespace/id');
 	$self->{datastoreid} = $xp->getNodeText('/featureType/store/id');
 	push @{$self->{mdlinks}}, decode_entities($_->string_value) foreach ($xp->findnodes('/featureType/metadataLinks/metadataLink/content')->get_nodelist)
