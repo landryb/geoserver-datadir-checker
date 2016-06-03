@@ -57,6 +57,16 @@ sub check {
 		return -1;
 	}
 	$self->{datastore} = \$datastore;
+	if ($datastore->{connurl}) {
+		my $fulldatapath = $datastore->{connurl}.$self->{nativename};
+		$fulldatapath =~ s/^file://;
+		my $vd = $self->{gc}->{vd}->get_item($fulldatapath.".shp");
+		$vd = $self->{gc}->{vd}->get_item($fulldatapath.".SHP") unless ($vd);
+		unless ($vd) {
+			say "Featuretype '$self->{name}' ($self->{id}) references a non-existent vectordata at $fulldatapath.{shp,SHP}";
+			return -1;
+		}
+	}
 	my @layers = $self->{gc}->{l}->look_for_featuretypeid($self->{id});
 	unless (@layers) {
 		say "Featuretype '$self->{name}' ($self->{id}) isnt referenced by any layer";
