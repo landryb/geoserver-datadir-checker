@@ -8,17 +8,23 @@ you inconsistencies found in the xml files, and geographical data referenced by 
 
  * Parses workspaces, namespaces, datastores, styles, layers and featuretypes
  * Lists all geographical data available in data/, ShapeFile format only for now
+ * Lists sld files
  * Checks:
    * *id* cross-references between xml files
    * unreferenced styles
    * unreferenced data directories
    * styles referencing unexistent sld
+   * empty/invalid sld
    * metadatalinks referencing existing MD urls
    * datastores referencing unexistent directory
    * featuretype referencing unexistent file
    * layers present in GetCapabilities document **TODO**
    * duplicates in data directories, based on sha256 sum of the .shp file
  * eventually look at fdupes on the datadir ?
+
+## Dependencies
+
+On debian, install the following packages: `libgdal-perl libwww-perl libxml-xpath-perl libxml-twig-perl`
 
 ## Why this script ?
 
