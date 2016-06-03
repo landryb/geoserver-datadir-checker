@@ -35,6 +35,7 @@ unused/unreferenced files/datastores/styles to prune the datadir from.
 ## Why offline ?
 
 Because you can run it from cron, on a copy of your datadir on a different box, etc..
+And most importantly, it can show you things that geoserver lost track of - unlinked files/sld, broken shp for example - this wouldnt be possible via GeoServer REST APIs..
 
 ## Why perl ?
 
