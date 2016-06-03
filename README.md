@@ -29,7 +29,8 @@ On debian, install the following packages: `libgdal-perl libwww-perl libxml-xpat
 ## Why this script ?
 
 I've grown tired of having broken layers/geoserver instances, and having to dive in the
-maze of stacktraces in the log files.
+maze of stacktraces in the log files. It also allows me to get the list of
+unused/unreferenced files/datastores/styles to prune the datadir from.
 
 ## Why offline ?
 
