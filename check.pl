@@ -34,11 +34,11 @@ $c{lg} = GSDatadir::LayergroupCollection->new(\%c, $path);
 $c{wm} = GSDatadir::WMSLayerCollection->new(\%c, $getcapurl);
 $c{md} = GSDatadir::MetadataCollection->new(\%c, $ARGV[1]);
 
-foreach (keys %c) {
+foreach (sort keys %c) {
 	$c{$_}->list;
 	$c{$_}->dump;
 }
 
 say "\nstarting checks\n";
-$c{$_}->check foreach (keys %c);
+$c{$_}->check foreach (sort keys %c);
 1;
