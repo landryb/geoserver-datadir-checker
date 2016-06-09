@@ -12,7 +12,13 @@ sub new {
 	my ($class, @args) = @_;
 	my $self = $class->SUPER::new(@args);
 	$self->{glob} = "nothing";
-	$self->{xml} = get($self->{path}) or die;
+	my $ua = LWP::UserAgent->new(ssl_opts => { SSL_verify_mode => 'SSL_VERIFY_NONE' });
+	my $response = $ua->get($self->{path});
+	if ($response->is_success) {
+		$self->{xml} = $response->decoded_content;
+	} else {
+		die $response->status_line;
+	}
 	return $self;
 }
 
