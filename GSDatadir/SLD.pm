@@ -22,12 +22,29 @@ sub new {
 	my $sha = Digest::SHA->new(256);
 	$sha->addfile($file);
 	$self->{sha256} = $sha->hexdigest;
+	$self->parse;
 	return $self;
+}
+
+sub parse {
+	my $self = shift;
+	my $parser = XML::Twig->new();
+	if ($self->{size} > 0 && $parser->safe_parsefile($self->{file})) {
+		$self->{wellformed} = 1;
+		my $xp = XML::XPath->new(filename => $self->{file});
+		$self->{name} = $xp->getNodeText('/sld:StyledLayerDescriptor/sld:NamedLayer/sld:Name | /StyledLayerDescriptor/NamedLayer/se:Name | /StyledLayerDescriptor/NamedLayer/Name | /StyledLayerDescriptor/UserLayer/Name | /sld:UserStyle/sld:Name');
+		$self->{firstrulename} = $xp->getNodeText('(/sld:StyledLayerDescriptor/sld:NamedLayer/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)[1]/sld:Name | (/StyledLayerDescriptor/NamedLayer/UserStyle/se:FeatureTypeStyle/se:Rule)[1]/se:Name | (/StyledLayerDescriptor/NamedLayer/UserStyle/FeatureTypeStyle/Rule)[1]/Name | (/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)[1]/sld:Title');
+		unless ($self->{name}) {
+			say "didnt found a style name in $self->{file}";
+		}
+	}
+	$self->{name} //= "";
+	$self->{firstrulename} //= "";
 }
 
 sub dump {
 	my $self = shift;
-	say "SLD: file=$self->{file}, size=$self->{size}, sha1=$self->{sha256}"
+	say "SLD: file=$self->{file}, size=$self->{size}, sha1=$self->{sha256}, name=$self->{name}, firstrulename=$self->{firstrulename}"
 }
 
 sub check {
