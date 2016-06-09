@@ -22,6 +22,42 @@ you inconsistencies found in the xml files, and geographical data referenced by 
    * duplicates in data directories, based on sha256 sum of the .shp file
  * eventually look at fdupes on the datadir ?
 
+## Usage
+
+```
+perl check.pl /path/to/geoserver/datadir [/path/to/geonetwork/xml/dump]
+```
+
+The last optional argument expects a directory with one file per geonetwork
+metadata, named with the uuid of the metadata. If used, it will parse
+ISO19139 metadata for references to `onlineResource` with `protocol` being
+`OGC:WMS`, and make sure that those point to existing layers in the geoserver
+`GetCapabilities`.
+
+If not used, at some point in the **TODO** list i'll populate the
+`MetadataCollection` with the records fetched via CSW..
+
+Such directory can be generated with the following additional script
+(`xml_grep` and `xml_split` come from the `xml-twig-tools` debian package - of
+course adapt to match your geonetwork database connection):
+
+```
+cd /path/to/geonetwork/xml/dump
+echo '<theroot>' > all.xml
+psql -t --no-align -h localhost -U geonetwork -d geonetwork \
+        -c "select data from metadata where data like '<gmd:MD_Metadata%';" >> all.xml \
+        || exit
+echo '</theroot>' >> all.xml
+
+xml_split all.xml || exit
+rm -f all.xml all-00.xml
+
+for f in *.xml ; do
+        mv $f $(xml_grep --text_only gmd:fileIdentifier/gco:CharacterString $f)
+done
+
+```
+
 ## Dependencies
 
 On debian, install the following packages: `libgdal-perl libwww-perl libxml-xpath-perl libxml-twig-perl`
