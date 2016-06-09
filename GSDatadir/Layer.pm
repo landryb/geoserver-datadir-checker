@@ -47,6 +47,7 @@ sub check {
 	}
 	$self->{defaultstyle} = \$defaultstyle;
 	unless ($featuretype) {
+		return 0 if ($self->{featuretypeid} =~ /^CoverageInfoImpl/);
 		say "Layer '$self->{name}' ($self->{id}) references a non-existent featuretype: $self->{featuretypeid}";
 		return -1;
 	}
