@@ -41,18 +41,19 @@ sub check {
 	my %wmslayers;
 	foreach (@{$self->{onlineres}}) {
 		my $url = url $_->{url};
-		my $fullname = $_->{name};
+		my $name = $_->{name};
 		my $workspace;
+		my $fullname;
 		# check that it's a layer coming from the local geoserver
 		if ($url->host eq $self->{gc}->{wm}->{host}) {
 			# if it's not a prefixed layer name, extract the workspace and prepend it
-			unless ($fullname =~ /:/) {
+			unless ($name =~ /:/) {
 				# XXX assumes path is in the form of /foo/[workspace]/xxx ...
 				$workspace = ($url->path_components)[2];
 				$fullname = $workspace.":".$_->{name};
 			} else {
-				$workspace = $fullname;
-				$workspace =~ s/:.*//;
+				$fullname = $name;
+				($workspace, $name) = split (/:/, $fullname);
 			}
 			my $wmslayer = $self->{gc}->{wm}->get_item($fullname);
 			unless ($wmslayer) {
