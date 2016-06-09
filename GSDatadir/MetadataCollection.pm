@@ -26,7 +26,8 @@ sub list {
 	}
 	foreach (`$self->{glob}`) {
 		chomp;
-		$self->{coll}{$_} = GSDatadir::Metadata->new($self->{gc}, $_);
+		my $item = GSDatadir::Metadata->new($self->{gc}, $_);
+		$self->{coll}{$item->{id}} = $item;
 	}
 }
 
