@@ -84,6 +84,19 @@ sub check {
 		return -1;
 	}
 	$self->{referenced_by} = \@layers;
+	# only check if MDCollection contains items
+	if (scalar(keys %{$self->{gc}->{md}->{coll}}) > 0) {
+		my %metadatas;
+		foreach (@{$self->{mdlinks}}) {
+			my $md = $self->{gc}->{md}->get_item($_->{uuid});
+			unless ($md) {
+				say "Featuretype '$self->{name}' ($self->{id}) references a non-existent metadata: $_->{uuid}";
+				return -1;
+			}
+			$metadatas{$_->{uuid}} = $md;
+		}
+		$self->{metadatas} = \%metadatas;
+	}
 	if (0) {
 		foreach (@{$self->{mdlinks}}) {
 			my $ua = LWP::UserAgent->new(ssl_opts => { SSL_verify_mode => 'SSL_VERIFY_NONE' });
