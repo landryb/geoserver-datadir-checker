@@ -35,7 +35,18 @@ sub parse {
 	$self->{nativename} = $xp->getNodeText('/featureType/nativeName');
 	$self->{namespaceid} = $xp->getNodeText('/featureType/namespace/id');
 	$self->{datastoreid} = $xp->getNodeText('/featureType/store/id');
-	push @{$self->{mdlinks}}, decode_entities($_->string_value) foreach ($xp->findnodes('/featureType/metadataLinks/metadataLink/content')->get_nodelist)
+	foreach ($xp->findnodes('/featureType/metadataLinks/metadataLink')->get_nodelist) {
+		my $url = decode_entities($xp->findvalue('content', $_));
+		my $uuid = $url;
+		$uuid =~ s/.*(uuid|ID)=//;
+		$uuid =~ s/&.*//;
+		push @{$self->{mdlinks}}, {
+			content_type => $xp->findvalue('type', $_),
+			uuid => $uuid,
+			csw => ($url =~ /service=csw/i ? 1 : 0),
+			url => $url
+		};
+	}
 }
 
 sub dump {
@@ -75,9 +86,10 @@ sub check {
 	$self->{referenced_by} = \@layers;
 	if (0) {
 		foreach (@{$self->{mdlinks}}) {
-			my @resp = head($_);
-			unless (@resp) {
-				say "Featuretype '$self->{name}' ($self->{id}) has a broken metadataLink: $_";
+			my $ua = LWP::UserAgent->new(ssl_opts => { SSL_verify_mode => 'SSL_VERIFY_NONE' });
+			my $response = $ua->head($_->{url});
+			unless ($response->is_success) {
+				say "Featuretype '$self->{name}' ($self->{id}) has a broken metadataLink: $_->{url} - response is ".$response->status_line;
 			}
 		}
 	}
