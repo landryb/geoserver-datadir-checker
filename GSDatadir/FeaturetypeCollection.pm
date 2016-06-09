@@ -23,4 +23,14 @@ sub look_for_datastoreid {
 	return @res;
 }
 
+sub lookup_by_namespace_prefix_and_name {
+	my $self = shift;
+	my $prefix = shift;
+	my $name = shift;
+	my @res = grep {
+		$self->{coll}{$_}->{name} eq $name and
+		$self->{gc}->{ns}->get_item($self->{coll}{$_}->{namespaceid})->{prefix} eq $prefix } keys %{$self->{coll}};
+	die "$#res items for $prefix:$name ? impossibru!" if ($#res > 0);
+	return $res[0];
+}
 1;
