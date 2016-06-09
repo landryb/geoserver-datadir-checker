@@ -63,8 +63,17 @@ sub check {
 	# XXX validate against xsd ? xsd is only in geoserver source..
 	# only validates well-formedness, exits if non well-formed
 	my $parser = XML::Twig->new();
-	unless ($parser->safe_parsefile($self->{file})) {
+	unless ($self->{wellformed}) {
 		say "SLD '$self->{id}' is incorrect XML, parsing failed";
+		return -1;
+	}
+
+	if ($self->{name} =~ /^(line|polygon|point|)$/) {
+		if ($self->{firstrulename} eq 'Rule 1') {
+			say "SLD '$self->{id}' has a default name and a default first rule name, *very* likely to be a default style";
+			return -1;
+		}
+		say "SLD '$self->{id}' has a default name, likely a default style";
 		return -1;
 	}
 	return 0;
