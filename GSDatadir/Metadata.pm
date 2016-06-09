@@ -5,6 +5,7 @@ use XML::XPath;
 
 package GSDatadir::Metadata;
 use File::Basename;
+use URI::URL;
 use Data::Dumper;
 
 sub new {
@@ -37,7 +38,31 @@ sub dump {
 
 sub check {
 	my $self = shift;
-	# XXX check that onlineresurl and onlineresname point to a valid workspace/layer
+	my %wmslayers;
+	foreach (@{$self->{onlineres}}) {
+		my $url = url $_->{url};
+		my $fullname = $_->{name};
+		my $workspace;
+		# check that it's a layer coming from the local geoserver
+		if ($url->host eq $self->{gc}->{wm}->{host}) {
+			# if it's not a prefixed layer name, extract the workspace and prepend it
+			unless ($fullname =~ /:/) {
+				# XXX assumes path is in the form of /foo/[workspace]/xxx ...
+				$workspace = ($url->path_components)[2];
+				$fullname = $workspace.":".$_->{name};
+			} else {
+				$workspace = $fullname;
+				$workspace =~ s/:.*//;
+			}
+			my $wmslayer = $self->{gc}->{wm}->get_item($fullname);
+			unless ($wmslayer) {
+				say "Metadata '$self->{title}' ($self->{id}) references a non-existent WMS layer: $fullname";
+				return -1;
+			}
+			$wmslayers{$fullname} = $wmslayer;
+		}
+	}
+	$self->{wmslayers} = \%wmslayers;
 	return 0;
 }
 
