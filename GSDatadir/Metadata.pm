@@ -39,6 +39,7 @@ sub dump {
 sub check {
 	my $self = shift;
 	my %wmslayers;
+	my %featuretypes;
 	foreach (@{$self->{onlineres}}) {
 		my $url = url $_->{url};
 		my $name = $_->{name};
@@ -55,6 +56,14 @@ sub check {
 				$fullname = $name;
 				($workspace, $name) = split (/:/, $fullname);
 			}
+
+			my $featuretype = $self->{gc}->{ft}->lookup_by_namespace_prefix_and_name($workspace, $name);
+			unless ($featuretype) {
+				say "Metadata '$self->{title}' ($self->{id}) references a non-existent featuretype: $name (in namespace $workspace)";
+				return -1;
+			}
+			$featuretypes{$fullname} = $featuretype;
+
 			my $wmslayer = $self->{gc}->{wm}->get_item($fullname);
 			unless ($wmslayer) {
 				say "Metadata '$self->{title}' ($self->{id}) references a non-existent WMS layer: $fullname";
@@ -64,6 +73,7 @@ sub check {
 		}
 	}
 	$self->{wmslayers} = \%wmslayers;
+	$self->{featuretypes} = \%featuretypes;
 	return 0;
 }
 
