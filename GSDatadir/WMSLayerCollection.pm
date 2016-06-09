@@ -6,6 +6,7 @@ package GSDatadir::WMSLayerCollection;
 use parent 'GSDatadir::Collection';
 use GSDatadir::WMSLayer;
 use LWP::Simple;
+use URI::URL;
 use Data::Dumper;
 
 sub new {
@@ -19,6 +20,8 @@ sub new {
 	} else {
 		die $response->status_line;
 	}
+	my $url = url $self->{path};
+	$self->{host} = $url->host;
 	return $self;
 }
 
