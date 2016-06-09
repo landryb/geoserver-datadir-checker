@@ -13,10 +13,11 @@ use GSDatadir::FeaturetypeCollection;
 use GSDatadir::LayerCollection;
 use GSDatadir::LayergroupCollection;
 use GSDatadir::WMSLayerCollection;
+use GSDatadir::MetadataCollection;
 use XML::XPath;
 
 my $path = $ARGV[0];
-die "usage: perl check.pl /path/to/geoserver/datadir" unless $path;
+die "usage: perl check.pl /path/to/geoserver/datadir [/path/to/geonetwork/xml/dump]" unless $path;
 die "$path is not a geoserver datadir" unless -f "$path/global.xml";
 my $xp = XML::XPath->new(filename => "$path/global.xml");
 my $getcapurl = $xp->getNodeText('/global/settings/proxyBaseUrl')."/ows?service=WMS&request=GetCapabilities";
@@ -31,6 +32,7 @@ $c{ft} = GSDatadir::FeaturetypeCollection->new(\%c, $path);
 $c{l} = GSDatadir::LayerCollection->new(\%c, $path);
 $c{lg} = GSDatadir::LayergroupCollection->new(\%c, $path);
 $c{wm} = GSDatadir::WMSLayerCollection->new(\%c, $getcapurl);
+$c{md} = GSDatadir::MetadataCollection->new(\%c, $ARGV[1]);
 
 foreach (keys %c) {
 	$c{$_}->list;
