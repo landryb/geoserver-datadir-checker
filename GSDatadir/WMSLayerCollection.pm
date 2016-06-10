@@ -13,13 +13,6 @@ sub new {
 	my ($class, @args) = @_;
 	my $self = $class->SUPER::new(@args);
 	$self->{glob} = "nothing";
-	my $ua = LWP::UserAgent->new(ssl_opts => { SSL_verify_mode => 'SSL_VERIFY_NONE' });
-	my $response = $ua->get($self->{path});
-	if ($response->is_success) {
-		$self->{xml} = $response->decoded_content;
-	} else {
-		die $response->status_line;
-	}
 	my $url = url $self->{path};
 	$self->{host} = $url->host;
 	return $self;
@@ -27,6 +20,13 @@ sub new {
 
 sub list {
 	my $self = shift;
+	my $ua = LWP::UserAgent->new(ssl_opts => { SSL_verify_mode => 'SSL_VERIFY_NONE' });
+	my $response = $ua->get($self->{path});
+	if ($response->is_success) {
+		$self->{xml} = $response->decoded_content;
+	} else {
+		die $response->status_line;
+	}
 	$self->{parser} = XML::XPath->new(xml => $self->{xml});
 	#parse getcapabilities, create WMSLayer
 	foreach ($self->{parser}->findnodes('WMS_Capabilities/Capability/Layer/Layer')->get_nodelist) {
