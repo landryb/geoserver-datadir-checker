@@ -24,10 +24,10 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{id} = $xp->getNodeText('/style/id');
-	$self->{name} = $xp->getNodeText('/style/name');
-	$self->{workspaceid} = $xp->getNodeText('/style/workspace/id');
-	$self->{filename} = $xp->getNodeText('/style/filename');
+	$self->{id} = $xp->getNodeText('/style/id')->value;
+	$self->{name} = $xp->getNodeText('/style/name')->value;
+	$self->{workspaceid} = $xp->getNodeText('/style/workspace/id')->value;
+	$self->{filename} = $xp->getNodeText('/style/filename')->value;
 }
 
 sub dump {

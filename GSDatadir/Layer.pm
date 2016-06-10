@@ -25,14 +25,13 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{id} = $xp->getNodeText('/layer/id');
-	$self->{name} = $xp->getNodeText('/layer/name');
-	$self->{type} = $xp->getNodeText('/layer/type');
-	$self->{defaultstyleid} = $xp->getNodeText('/layer/defaultStyle/id');
-	# XXX handle multiplestyles
+	$self->{id} = $xp->getNodeText('/layer/id')->value;
+	$self->{name} = $xp->getNodeText('/layer/name')->value;
+	$self->{type} = $xp->getNodeText('/layer/type')->value;
+	$self->{defaultstyleid} = $xp->getNodeText('/layer/defaultStyle/id')->value;
 	push @{$self->{styleids}}, $_->string_value foreach ($xp->findnodes('/layer/styles/style/id')->get_nodelist);
 	push @{$self->{styleids}}, $self->{defaultstyleid};
-	$self->{featuretypeid} = $xp->getNodeText('/layer/resource/id');
+	$self->{featuretypeid} = $xp->getNodeText('/layer/resource/id')->value;
 }
 
 sub dump {

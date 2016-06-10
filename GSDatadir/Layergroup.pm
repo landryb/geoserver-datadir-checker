@@ -25,10 +25,10 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{id} = $xp->getNodeText('/layerGroup/id');
-	$self->{name} = $xp->getNodeText('/layerGroup/name');
-	$self->{title} = $xp->getNodeText('/layerGroup/title');
-	$self->{workspaceid} = $xp->getNodeText('/layerGroup/workspace/id');
+	$self->{id} = $xp->getNodeText('/layerGroup/id')->value;
+	$self->{name} = $xp->getNodeText('/layerGroup/name')->value;
+	$self->{title} = $xp->getNodeText('/layerGroup/title')->value;
+	$self->{workspaceid} = $xp->getNodeText('/layerGroup/workspace/id')->value;
 
 	push @{$self->{layerids}}, $_->string_value foreach ($xp->findnodes('/layerGroup/publishables/published[@type="layer"]/id')->get_nodelist);
 	push @{$self->{styleids}}, $_->string_value foreach ($xp->findnodes('/layerGroup/styles/style/id')->get_nodelist);

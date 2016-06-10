@@ -22,9 +22,9 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{id} = $xp->getNodeText('/namespace/id');
-	$self->{prefix} = $xp->getNodeText('/namespace/prefix');
-	$self->{uri} = $xp->getNodeText('/namespace/uri');
+	$self->{id} = $xp->getNodeText('/namespace/id')->value;
+	$self->{prefix} = $xp->getNodeText('/namespace/prefix')->value;
+	$self->{uri} = $xp->getNodeText('/namespace/uri')->value;
 }
 
 sub dump {

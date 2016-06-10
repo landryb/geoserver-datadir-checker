@@ -26,12 +26,12 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{id} = $xp->getNodeText('/dataStore/id');
-	$self->{name} = $xp->getNodeText('/dataStore/name');
-	$self->{type} = $xp->getNodeText('/dataStore/type');
-	$self->{enabled} = $xp->getNodeText('/dataStore/enabled');
-	$self->{workspaceid} = $xp->getNodeText('/dataStore/workspace/id');
-	$self->{connurl} = $xp->getNodeText('/dataStore/connectionParameters/entry[@key="url"]');
+	$self->{id} = $xp->getNodeText('/dataStore/id')->value;
+	$self->{name} = $xp->getNodeText('/dataStore/name')->value;
+	$self->{type} = $xp->getNodeText('/dataStore/type')->value;
+	$self->{enabled} = $xp->getNodeText('/dataStore/enabled')->value;
+	$self->{workspaceid} = $xp->getNodeText('/dataStore/workspace/id')->value;
+	$self->{connurl} = $xp->getNodeText('/dataStore/connectionParameters/entry[@key="url"]')->value;
 	if ($self->{connurl} && substr($self->{connurl}, 0, 6) ne "file:/") {
 		my $basedir = $self->{gc}->{ds}->{path};
 #		say "fixing connurl ($self->{connurl}) for $self->{id}, prepending $basedir";

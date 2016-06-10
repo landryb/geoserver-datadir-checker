@@ -21,8 +21,8 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{id} = $xp->getNodeText('/workspace/id');
-	$self->{name} = $xp->getNodeText('/workspace/name');
+	$self->{id} = $xp->getNodeText('/workspace/id')->value;
+	$self->{name} = $xp->getNodeText('/workspace/name')->value;
 }
 
 sub dump {

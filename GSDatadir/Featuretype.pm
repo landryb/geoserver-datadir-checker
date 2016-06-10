@@ -28,20 +28,20 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{id} = $xp->getNodeText('/featureType/id');
-	$self->{name} = $xp->getNodeText('/featureType/name');
-	$self->{title} = $xp->getNodeText('/featureType/title');
-	$self->{declaredsrs} = $xp->getNodeText('/featureType/srs');
-	$self->{nativename} = $xp->getNodeText('/featureType/nativeName');
-	$self->{namespaceid} = $xp->getNodeText('/featureType/namespace/id');
-	$self->{datastoreid} = $xp->getNodeText('/featureType/store/id');
+	$self->{id} = $xp->getNodeText('/featureType/id')->value;
+	$self->{name} = $xp->getNodeText('/featureType/name')->value;
+	$self->{title} = $xp->getNodeText('/featureType/title')->value;
+	$self->{declaredsrs} = $xp->getNodeText('/featureType/srs')->value;
+	$self->{nativename} = $xp->getNodeText('/featureType/nativeName')->value;
+	$self->{namespaceid} = $xp->getNodeText('/featureType/namespace/id')->value;
+	$self->{datastoreid} = $xp->getNodeText('/featureType/store/id')->value;
 	foreach ($xp->findnodes('/featureType/metadataLinks/metadataLink')->get_nodelist) {
-		my $url = decode_entities($xp->findvalue('content', $_));
+		my $url = decode_entities($xp->findvalue('content', $_)->value);
 		my $uuid = $url;
 		$uuid =~ s/.*(uuid|ID)=//;
 		$uuid =~ s/&.*//;
 		push @{$self->{mdlinks}}, {
-			content_type => $xp->findvalue('type', $_),
+			content_type => $xp->findvalue('type', $_)->value,
 			uuid => $uuid,
 			csw => ($url =~ /service=csw/i ? 1 : 0),
 			url => $url

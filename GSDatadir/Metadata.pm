@@ -22,11 +22,11 @@ sub new {
 sub parse {
 	my $self = shift;
 	my $xp = XML::XPath->new(filename => $self->{file});
-	$self->{title} = $xp->getNodeText('//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString');
+	$self->{title} = $xp->getNodeText('//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString')->value;
 	foreach ($xp->findnodes('//gmd:onLine/gmd:CI_OnlineResource/gmd:protocol/gco:CharacterString[text()="OGC:WMS"]/../..')->get_nodelist) {
 		push @{$self->{onlineres}}, {
-			url => $xp->findvalue('gmd:linkage/gmd:URL', $_),
-			name => $xp->findvalue('gmd:name/gco:CharacterString', $_)
+			url => $xp->findvalue('gmd:linkage/gmd:URL', $_)->value,
+			name => $xp->findvalue('gmd:name/gco:CharacterString', $_)->value
 		};
 	}
 }

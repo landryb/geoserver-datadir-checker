@@ -32,8 +32,8 @@ sub parse {
 	if ($self->{size} > 0 && $parser->safe_parsefile($self->{file})) {
 		$self->{wellformed} = 1;
 		my $xp = XML::XPath->new(filename => $self->{file});
-		$self->{name} = $xp->getNodeText('/sld:StyledLayerDescriptor/sld:NamedLayer/sld:Name | /StyledLayerDescriptor/NamedLayer/se:Name | /StyledLayerDescriptor/NamedLayer/Name | /StyledLayerDescriptor/UserLayer/Name | /sld:UserStyle/sld:Name');
-		$self->{firstrulename} = $xp->getNodeText('(/sld:StyledLayerDescriptor/sld:NamedLayer/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)[1]/sld:Name | (/StyledLayerDescriptor/NamedLayer/UserStyle/se:FeatureTypeStyle/se:Rule)[1]/se:Name | (/StyledLayerDescriptor/NamedLayer/UserStyle/FeatureTypeStyle/Rule)[1]/Name | (/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)[1]/sld:Title');
+		$self->{name} = $xp->getNodeText('/sld:StyledLayerDescriptor/sld:NamedLayer/sld:Name | /StyledLayerDescriptor/NamedLayer/se:Name | /StyledLayerDescriptor/NamedLayer/Name | /StyledLayerDescriptor/UserLayer/Name | /sld:UserStyle/sld:Name')->value;
+		$self->{firstrulename} = $xp->getNodeText('(/sld:StyledLayerDescriptor/sld:NamedLayer/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)[1]/sld:Name | (/StyledLayerDescriptor/NamedLayer/UserStyle/se:FeatureTypeStyle/se:Rule)[1]/se:Name | (/StyledLayerDescriptor/NamedLayer/UserStyle/FeatureTypeStyle/Rule)[1]/Name | (/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)[1]/sld:Title')->value;
 		unless ($self->{name}) {
 			say "didnt found a style name in $self->{file}";
 		}
