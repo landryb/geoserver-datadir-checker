@@ -28,7 +28,7 @@ sub get_item {
 
 sub dump {
 	my $self = shift;
-	my @a = keys %{$self->{coll}};
+	my @a = sort keys %{$self->{coll}};
 	say $self->itemtype."Collection: path=$self->{path}, glob=$self->{glob}, ".($#a + 1)." items";
 	foreach (@a) {
 		$self->{coll}{$_}->dump;
@@ -38,7 +38,7 @@ sub dump {
 sub check {
 	my $self = shift;
 	my @err = ();
-	foreach (keys %{$self->{coll}}) {
+	foreach (sort keys %{$self->{coll}}) {
 		if ($self->{coll}{$_}->check < 0) {
 			push @err, $_;
 #			say "$_ has an issue";

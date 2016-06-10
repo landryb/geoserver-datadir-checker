@@ -41,6 +41,10 @@ sub check {
 	my %wmslayers;
 	my %featuretypes;
 	foreach (@{$self->{onlineres}}) {
+		if ($_->{url} eq '') {
+			say "Metadata '$self->{title}' ($self->{id}) has an OnlineResource with an empty url";
+			return -1;
+		}
 		my $url = url $_->{url};
 		my $name = $_->{name};
 		my $workspace;
