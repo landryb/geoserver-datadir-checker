@@ -19,7 +19,7 @@ sub itemtype { return "GSDatadir::Layer"; }
 sub look_for_styleid {
 	my $self = shift;
 	my $styleid = shift;
-	my @res = grep { $self->{coll}{$_}->{defaultstyleid} eq $styleid } keys %{$self->{coll}};
+	my @res = grep { grep /$styleid/, @{$self->{coll}{$_}->{styleids}} } keys %{$self->{coll}};
 	return @res;
 }
 

@@ -16,6 +16,7 @@ sub new {
 	$self->{name} = undef;
 	$self->{type} = undef;
 	$self->{defaultstyleid} = undef;
+	$self->{styleids} = ();
 	$self->{featuretypeid} = undef;
 	$self->parse;
 	return $self;
@@ -29,6 +30,8 @@ sub parse {
 	$self->{type} = $xp->getNodeText('/layer/type');
 	$self->{defaultstyleid} = $xp->getNodeText('/layer/defaultStyle/id');
 	# XXX handle multiplestyles
+	push @{$self->{styleids}}, $_->string_value foreach ($xp->findnodes('/layer/styles/style/id')->get_nodelist);
+	push @{$self->{styleids}}, $self->{defaultstyleid};
 	$self->{featuretypeid} = $xp->getNodeText('/layer/resource/id');
 }
 
