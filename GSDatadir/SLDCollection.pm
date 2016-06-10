@@ -18,7 +18,6 @@ sub itemtype { return "GSDatadir::SLD"; }
 
 sub check {
 	my $self = shift;
-	$self->SUPER::check();
 	my %hash_by_sha = ();
 	foreach (keys %{$self->{coll}}) {
 		push @{$hash_by_sha{$self->{coll}{$_}->{sha256}}}, $_;
@@ -32,5 +31,6 @@ sub check {
 			}
 		}
 	}
+	$self->SUPER::check();
 }
 1;
