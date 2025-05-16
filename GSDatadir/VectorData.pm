@@ -7,8 +7,8 @@ use Digest::SHA;
 package GSDatadir::VectorData;
 use File::Basename;
 use Data::Dumper;
-#libgdal-perl debian package
-use Geo::GDAL;
+# cf https://wiki.debian.org/BookwormGdalPerl
+use Geo::GDAL::FFI qw/Open/;
 
 sub new {
 	my $class = shift;
@@ -24,8 +24,8 @@ sub new {
 	$sha->addfile($file);
 	$self->{sha256} = $sha->hexdigest;
 	$self->{layername} = basename($file,('.shp','.SHP'));
-	my $datasource = Geo::OGR::Open("$file");
-	my $layer = $datasource->Layer($self->{layername});
+	my $datasource = Open("$file");
+	my $layer = $datasource->GetLayer($self->{layername});
 	$self->{featurecount} = $layer->GetFeatureCount();
 	return $self;
 }
