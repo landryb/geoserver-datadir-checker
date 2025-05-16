@@ -5,7 +5,7 @@ use XML::XPath;
 
 package GSDatadir::Metadata;
 use File::Basename;
-use URI::URL;
+use URI;
 use Data::Dumper;
 
 sub new {
@@ -45,7 +45,7 @@ sub check {
 			say "Metadata '$self->{title}' ($self->{id}) has an OnlineResource with an empty url";
 			return -1;
 		}
-		my $url = url $_->{url};
+		my $url = URI->new($_->{url});
 		my $name = $_->{name};
 		my $workspace;
 		my $fullname;
