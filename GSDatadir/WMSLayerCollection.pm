@@ -6,21 +6,26 @@ package GSDatadir::WMSLayerCollection;
 use parent 'GSDatadir::Collection';
 use GSDatadir::WMSLayer;
 use LWP::Simple;
-use URI::URL;
+use IO::Socket::SSL;
+use URI;
 use Data::Dumper;
 
 sub new {
 	my ($class, @args) = @_;
 	my $self = $class->SUPER::new(@args);
 	$self->{glob} = "nothing";
-	my $url = url $self->{path};
-	$self->{host} = $url->host;
+	my $url = URI->new($self->{path});
+	if($url->scheme eq 'http' or $url->scheme eq 'https') {
+		$self->{host} = $url->host;
+	} else {
+		$self->{host} = $self->{path}; # should be found from elsewhere, because the get() below will fail
+	}
 	return $self;
 }
 
 sub list {
 	my $self = shift;
-	my $ua = LWP::UserAgent->new(ssl_opts => { SSL_verify_mode => 'SSL_VERIFY_NONE' });
+	my $ua = LWP::UserAgent->new(ssl_opts => { SSL_verify_mode => IO::Socket::SSL::SSL_VERIFY_NONE});
 	my $response = $ua->get($self->{path});
 	if ($response->is_success) {
 		$self->{xml} = $response->decoded_content;
